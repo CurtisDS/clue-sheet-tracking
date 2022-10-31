@@ -1,0 +1,71 @@
+<div class="game-console-container">
+  <!------------------------------------------ NotStarted ------------------------------------------------------>
+  <section *ngIf="gameState===GameStates.NotStarted">
+    <button mat-stroked-button (click)="doNext()" color="primary">Start Game</button>
+  </section>
+  <!---------------------------------------- ChooseYourCards --------------------------------------------------->
+  <section *ngIf="gameState===GameStates.ChooseYourCards">
+    <mat-card>
+      <mat-card-header>
+        <mat-icon mat-card-avatar svgIcon="cards" [style.color]="activePlayer.color.value"></mat-icon>
+        <mat-card-title>Before We Start</mat-card-title>
+        <mat-card-subtitle>Please select your cards from the clue sheet.</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item *ngFor="let card of usersCards; let i = index">Card {{i + 1}}: {{card}}</mat-list-item>
+        </mat-list>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-raised-button [disabled]="!hasUserSelectedAllOwnedCards" (click)="doNext()" color="primary">Start</button>
+      </mat-card-actions>
+    </mat-card>
+    <br><button mat-button (click)="undoClick()" color="accent">Undo {{lastAction}}</button>
+  </section>
+  <!---------------------------------------- ChooseYourCards --------------------------------------------------->
+  <section *ngIf="gameState===GameStates.PlayerIsGuessing">
+    <mat-card>
+      <mat-card-header>
+        <mat-icon mat-card-avatar svgIcon="cards" [style.color]="activePlayer.color.value"></mat-icon>
+        <mat-card-title>It is {{activePlayer.shortname}}'s turn.</mat-card-title>
+        <mat-card-subtitle>Please select the guessed cards from the clue sheet.</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>Suspect: {{currentGuessSuspectName}}</mat-list-item>
+          <mat-list-item>Weapon: {{currentGuessWeaponName}}</mat-list-item>
+          <mat-list-item>Room: {{currentGuessRoomName}}</mat-list-item>
+        </mat-list>
+      </mat-card-content>
+      <mat-card-actions align="end">
+          <button mat-stroked-button (click)="skipToNextPlayer()" color="warn">Player Did Not Guess</button>
+          <button mat-raised-button [disabled]="!hasUserSelectedGuessedCards" (click)="doNext()" color="primary">Register Guess</button>
+     
+      </mat-card-actions>
+    </mat-card> 
+    <br><button mat-button (click)="undoClick()" color="accent">Undo {{lastAction}}</button>
+  </section>
+  <!----------------------------------- ChoosePlayerWhoShowedCard ---------------------------------------------->
+  <section *ngIf="gameState===GameStates.ChoosePlayerWhoShowedCard">
+    <mat-card>
+      <mat-card-header>
+        <mat-icon mat-card-avatar svgIcon="account-circle" [style.color]="activePlayer.color.value"></mat-icon>
+        <mat-card-title>It is {{activePlayer.shortname}}'s turn.</mat-card-title>
+        <mat-card-subtitle>Please select the player who showed a card<span *ngIf="turnIndex===0"> and the card shown</span> from the clue sheet.</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>Player showing card: {{currentPlayerShowingCardName}}</mat-list-item>
+          <mat-list-item *ngIf="turnIndex===0">Card shown to you: {{currentCardShownToYou}}</mat-list-item>
+        </mat-list>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        
+          <button mat-stroked-button (click)="skipToNextPlayer()" color="warn">No One Showed a Card</button>
+          <button mat-raised-button [disabled]="!hasUserSelectedPlayerWhoShowedCard || (turnIndex===0 && !hasUserSelectedCardShown)" (click)="doNext()" color="primary">Finish</button>
+     
+      </mat-card-actions>
+    </mat-card>
+    <br><button mat-button (click)="undoClick()" color="accent">Undo {{lastAction}}</button>
+  </section>
+</div>

@@ -1,0 +1,16 @@
+<span class="active-player-badge" matBadge="✓" [matBadgeHidden]="isActivePlayer" matBadgePosition="below after" matBadgeSize="small" matBadgeOverlap="true"></span>
+<table [style.visibility]="getPlayerVisible()" class="player-info-table">
+<tr>
+  <th colspan="3"><mat-icon class="person-marker" svgIcon="account-circle" [style.color]="getPlayerColor()"></mat-icon></th>
+</tr>
+<tr>
+  <td><div class="card-marker" [style.border-color]="getPlayerColor()" [style.background-color]="getCardIndexBGColor(0)"></div></td>
+  <td><div class="card-marker" [style.border-color]="getPlayerColor()" [style.background-color]="getCardIndexBGColor(1)"></div></td>
+  <td><div class="card-marker" [style.border-color]="getPlayerColor()" [style.background-color]="getCardIndexBGColor(2)"></div></td>
+</tr>
+<tr>
+  <td><div class="card-marker" [style.border-color]="getPlayerColor()" [style.background-color]="getCardIndexBGColor(3)" [class.hidden]="!isCardIndexVisible(3)"></div></td>
+  <td><div class="card-marker" [style.border-color]="getPlayerColor()" [style.background-color]="getCardIndexBGColor(4)" [class.hidden]="!isCardIndexVisible(4)"></div></td>
+  <td><div class="card-marker" [style.border-color]="getPlayerColor()" [style.background-color]="getCardIndexBGColor(5)" [class.hidden]="!isCardIndexVisible(5)"></div></td>
+</tr>
+</table>

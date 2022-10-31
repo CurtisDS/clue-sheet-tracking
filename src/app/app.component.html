@@ -1,0 +1,96 @@
+<mat-toolbar color="primary" class="header-toolbar">
+  <button mat-icon-button (click)="showEditBoardForm=!showEditBoardForm"><mat-icon svgIcon="settings"></mat-icon></button>
+  <h1>Clue Sheet</h1>
+  <span class="tool-bar-spacer"></span>
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon svgIcon="more_vert"></mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="restartGame()">
+      <mat-icon svgIcon="restart"></mat-icon>
+      <span>Restart Game</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>
+<div *ngIf="showEditBoardForm">
+  <section>
+    <h2>Suspect List</h2>
+    <div class="suspect-info-container" dragula="suspects" [dragulaModel]="suspectInfo">
+      <ng-container *ngFor="let suspect of suspectInfo; let i = index">
+        <div class="suspect-info-block">
+          <mat-form-field appearance="fill">
+            <mat-label>Suspect {{i + 1}}</mat-label>
+            <select matNativeControl [compareWith]="compareSuspect" [formControl]="suspect.selectedSuspectControl">
+                <optgroup *ngFor="let theme of themes" class="suspect-option" [label]="theme.title">
+                  <option *ngFor="let suspectOption of theme.suspects" [disabled]="shouldSuspectBeDisabled(suspect.selectedSuspectControl.value, suspectOption)" [ngValue]="suspectOption" class="suspect-option" attr.style="color: {{suspectOption?.color?.value}};">{{suspectOption.name}}</option>
+                </optgroup>
+              </select>
+          </mat-form-field>
+          <mat-form-field appearance="fill" floatLabel="always" style="width: 80px;"
+            (click)="isPlayerClickEvent(suspect.isPlayerControl, suspect.id);">
+            <input matInput style="display:none">
+            <mat-label>Is a Player</mat-label>
+            <mat-checkbox (change)="toggleSuspectInSheetList(suspect.id, suspect.isPlayerControl.value)"
+              class="fake-check-box-form-field" [formControl]="suspect.isPlayerControl">
+            </mat-checkbox>
+            <mat-icon class="drag-handle" svgIcon="drag"></mat-icon>
+          </mat-form-field>
+        </div>
+      </ng-container>
+    </div>
+  </section>
+  <mat-divider></mat-divider>
+  <section>
+    <h2>Player's Sheet Order</h2>
+    <div cdkDropList class="selected-player-list horizontal" cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
+      <div class="selected-player-list-box horizontal" *ngFor="let selectedPlayer of selectedPlayers; let i = index" cdkDrag>
+        <span>{{(i != 0 ? i + '. ' : '') + selectedPlayer.selectedSuspectControl.value.shortname + (i == 0 ? ' (You)' : '')}}</span>
+      </div>
+    </div>
+    <div cdkDropList class="selected-player-list" (cdkDropListDropped)="drop($event)">
+      <div class="selected-player-list-box" *ngFor="let selectedPlayer of selectedPlayers; let i = index" cdkDrag>
+        <span>{{(i != 0 ? i + '. ' : '') + selectedPlayer.selectedSuspectControl.value.shortname + (i == 0 ? ' (You)' : '')}}</span>
+      </div>
+    </div>
+  </section>
+  <mat-divider></mat-divider>
+  <section>
+    <div class="section-element">
+      <h2>Who Starts</h2>
+      <mat-form-field appearance="fill">
+        <mat-label>First Player: </mat-label>
+        <select matNativeControl [formControl]="selectedFirstPlayer" (change)="recalcHandSizes()" name="first-player">
+          <option *ngFor="let selectedPlayer of selectedPlayers" [value]="selectedPlayer.id">
+            {{selectedPlayer.selectedSuspectControl.value.shortname}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>
+    <div class="section-element">
+      <h2>Board Theme</h2>
+      <mat-form-field appearance="fill">
+        <mat-label>Theme: </mat-label>
+        <select matNativeControl [compareWith]="compareTheme" [formControl]="selectedClueTheme" name="theme" (change)="initThemeCards()">
+          <option *ngFor="let theme of themes" [ngValue]="theme">
+            {{theme.title}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>
+    <div class="section-element">
+      <h2>Show Bluff</h2>
+      <mat-button-toggle-group class="button-toggle-group" [formControl]="bluffTracking">
+        <mat-button-toggle [value]="true">Show</mat-button-toggle>
+        <mat-button-toggle [value]="false">Hide</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </section>
+  <mat-divider></mat-divider>
+</div>
+<section>
+  <br>
+  <div class="flex-container">
+    <app-clue-sheet class="clue-sheet"></app-clue-sheet>
+    <app-game-console class="game-console"></app-game-console>
+  </div>
+</section>

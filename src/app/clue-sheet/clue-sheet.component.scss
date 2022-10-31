@@ -1,0 +1,114 @@
+table.clue-sheet-table {
+  background-color: rgb(203, 199, 211);
+  border-collapse: collapse;
+  border: 8px solid rgb(162, 131, 96);
+  user-select: none;
+  > thead.hide-header > tr {
+    display: none;
+  }
+  > thead > tr >,
+  > tbody > tr > {
+      th {
+        background-color: rgb(160, 156, 168);
+        text-align: left;
+        font-size: 130%;
+        padding: 3px 6px;
+      }
+      td, th {
+        border: 2px solid rgb(158, 156, 164);
+        &.player-col:not(.isPlayer) {
+          border: 2px solid rgba(170, 168, 177, 0.5);
+        }
+      }
+      td {
+        min-width: 1.2em;
+        padding: 6px;
+        &.cell {
+          padding: 0;
+          text-align: center;
+          > .mat-icon { 
+            width: 20px;
+            &.green {
+              color: green;
+            }
+            &.red {
+              color: red;
+            }
+          }
+        }
+        > div.guessTracking {
+          font-size: 9px;
+          max-width: 37px;
+          line-height: 1em;
+          margin-top: -1em;
+          padding-left: 1px;
+          text-align: left;
+        }
+      }
+      td.strike {
+        text-decoration: line-through;
+        color: red;
+      }
+      td.correct {
+        text-decoration:underline;
+        color: green;
+      }
+      td:first-of-type {
+        padding-right: 2em;
+        font-weight: bold;
+        font-style: italic;
+      }
+      td.highlighted {
+        background-color: rgb(242, 241, 244);
+      }
+  }
+  > tbody > tr.player-row > td.player-col,
+  > tbody > tr.player-row > td.player-col:not(.isPlayer) {
+    border: none;
+  }
+  > tbody > tr.player-row > td.player-col:first-of-type {
+    padding-bottom: 0;
+    text-align: center;
+    padding-right: 6px;
+    > * {
+      display: inline-block;
+    }
+  }
+  > tbody > tr.player-row > td.player-col.isPlayer.active-player::before {    
+    content: ' ';
+  }
+  &.ChooseYourCards > tbody > tr > td.card:not(.block-select):hover,
+  &.PlayerIsGuessing > tbody > tr > td.card:hover,
+  &.ChoosePlayerWhoShowedCard > tbody > tr.player-row > td.player-col.isPlayer:not(.block-select):hover {
+    background-color: rgb(242, 241, 244);
+    cursor: pointer;
+  }
+  &.ChoosePlayerWhoShowedCard > tbody > tr.player-row > td.player-col.isPlayer.block-select:hover {
+    cursor: not-allowed;
+  }
+  &.ChoosePlayerWhoShowedCard > tbody > tr > td.card.select-card-shown.highlight-card-shown {
+    background-color: rgb(167, 211, 161);
+  }
+  &.ChoosePlayerWhoShowedCard > tbody > tr > td.card.select-card-shown:not(.block-select):hover {
+    background-color: rgb(167, 211, 161);
+    cursor: pointer;
+  }
+  &.ChoosePlayerWhoShowedCard > tbody > tr > td.card.select-card-shown.block-select:hover {
+    cursor: not-allowed;
+  }
+  &.ChooseYourCards > tbody > tr > td.card.block-select:hover {
+    cursor: not-allowed;
+  }
+}
+.board {
+  border-radius: 10px;
+  overflow: hidden;
+  display: inline-block;
+}
+.self-owned-card::after {
+  content: '*';
+  font-style: normal;
+  text-decoration: none;
+  position: absolute;
+  margin-left: 4px;
+}

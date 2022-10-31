@@ -1,0 +1,40 @@
+<div class="board">
+  <table class="clue-sheet-table {{getStateClass()}}">
+    <thead class="hide-header">
+      <tr><th colspan="6"></th></tr>
+    </thead>
+    <tbody>
+      <tr class="player-row">
+        <td class="player-col {{getPlayerClasses(0)}}" [class.isPlayer]="players[0]" [matTooltip]="getPlayerName(players[0])" matTooltipPosition="above" (click)="playerClicked(0)"><app-player-icon [info]="players[0]" [active-player]="turnIndex !== 0"></app-player-icon></td>
+        <td *ngFor="let col of playerColumns" class="player-col {{getPlayerClasses(col)}}" [class.isPlayer]="players[col]" [matTooltip]="getPlayerName(players[col])" matTooltipPosition="above" (click)="playerClicked(col)"><app-player-icon [info]="players[col]" [active-player]="turnIndex !== col"></app-player-icon></td>
+      </tr>
+    </tbody>
+    <thead>
+      <tr><th colspan="6">Suspects</th></tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let suspect of suspects; let i = index">
+        <td (click)="cardClicked(CardType.Suspects,i)" class="card {{getCardClass(CardType.Suspects,i)}}">{{suspect?.selectedSuspectControl.value.shortname}}</td>
+        <td *ngFor="let col of playerColumns" class="player-col cell {{getCellClasses(CardType.Suspects,i,col)}}" [class.isPlayer]="players[col]"><mat-icon [svgIcon]="getCellIcon(CardType.Suspects,i,col)" class="{{getCellIconClass(CardType.Suspects,i,col)}}"></mat-icon><div *ngIf="getCellTracking(CardType.Suspects,i,col)" class="guessTracking">{{getCellTracking(CardType.Suspects,i,col)}}</div></td>
+      </tr>
+    </tbody>
+    <thead>
+      <tr><th colspan="6">Weapons</th></tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let weapon of theme.weapons; let i = index">
+        <td (click)="cardClicked(CardType.Weapons,i)" class="card {{getCardClass(CardType.Weapons,i)}}">{{weapon}}</td>
+        <td *ngFor="let col of playerColumns" class="player-col cell {{getCellClasses(CardType.Weapons,i,col)}}" [class.isPlayer]="players[col]"><mat-icon [svgIcon]="getCellIcon(CardType.Weapons,i,col)" class="{{getCellIconClass(CardType.Weapons,i,col)}}"></mat-icon><div *ngIf="getCellTracking(CardType.Weapons,i,col)" class="guessTracking">{{getCellTracking(CardType.Weapons,i,col)}}</div></td>
+      </tr>
+    </tbody>
+    <thead>
+      <tr><th colspan="6">Rooms</th></tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let room of theme.rooms; let i = index">
+        <td (click)="cardClicked(CardType.Rooms,i)" class="card {{getCardClass(CardType.Rooms,i)}}">{{room}}</td>
+        <td *ngFor="let col of playerColumns" class="player-col cell {{getCellClasses(CardType.Rooms,i,col)}}" [class.isPlayer]="players[col]"><mat-icon [svgIcon]="getCellIcon(CardType.Rooms,i,col)" class="{{getCellIconClass(CardType.Rooms,i,col)}}"></mat-icon><div *ngIf="getCellTracking(CardType.Rooms,i,col)" class="guessTracking">{{getCellTracking(CardType.Rooms,i,col)}}</div></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
