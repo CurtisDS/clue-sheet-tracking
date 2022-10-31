@@ -8,7 +8,6 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { RegisterIcons } from './mat-icons';
 import { DragulaService, DragulaOptions } from 'ng2-dragula';
 import { SubscriptionLike } from 'rxjs';
-import { AnalysisFailure } from '@angular/core/schematics/migrations/module-with-providers/transform';
 export const MenuState = {
   showEditBordForm: true
 }
